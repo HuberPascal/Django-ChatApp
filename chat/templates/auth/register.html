@@ -1,0 +1,17 @@
+{% extends "master-template.html" %} {% block content %}
+
+<h1>Register</h1>
+
+<form method="POST" action="/register/">
+    {% csrf_token %} {% comment %} <input type="hidden" name="redirect" value="{{ redirect }}" /> {% endcomment %}
+
+    <!-- Fehleranzeige -->
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <div><input name="username" type="text" placeholder="Name" /></div>
+    <div><input name="password" type="password" placeholder="Password" /></div>
+    <div><input name="email" type="email" placeholder="email" /></div>
+    <div><button>Register</button></div>
+</form>
+{% endblock content %}

@@ -9,8 +9,13 @@
 <form method="POST" action="/login/">
     {% csrf_token %}
     <input type="hidden" name="redirect" value="{{ redirect }}" />
-    <div><input name="username" type="text" /></div>
-    <div><input name="password" type="password" /></div>
+    <div><input name="username" type="text" placeholder="UserName" /></div>
+    <div><input name="password" type="password" placeholder="password" /></div>
     <div><button>Login</button></div>
 </form>
+
+<div>
+    <p>Hier registrieren <a href="/register/" hier>Hier</a></p>
+</div>
+
 {% endblock content %}

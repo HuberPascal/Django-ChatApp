@@ -3,6 +3,7 @@ from django.shortcuts import render
 from .models import Chat, Message
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -26,3 +27,23 @@ def login_view(request):
         else:
             return render(request, 'auth/login.html', {'wrongPassword': True, 'redirect': redirect})    
     return render(request, 'auth/login.html', {'redirect': redirect})
+
+
+def register_view(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        print('username ist', username)
+
+        if username and password and email:
+            if User.objects.filter(username=username).exists():
+                return render(request, 'auth/register.html', {'error': 'Username already taken'})
+            if User.objects.filter(email=email).exists():
+                return render(request, 'auth/register.html', {'error': 'Email already taken'})
+
+            user = User.objects.create_user(username=username,
+                                 email=email,
+                                 password=password)
+    
+    return render(request, 'auth/register.html')
