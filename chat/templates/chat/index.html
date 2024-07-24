@@ -2,11 +2,30 @@
 <div><span class="color-gray">[{{ message.created_at }}]</span> {{ message.author.first_name }}: <i>{{ message.text }}</i></div>
 {% endfor %}
 
-<form action="/chat/" method="post">
+<script>
+    async function sendMessage() {
+        let form = new FormData();
+        let token = "{{ csrf_token }}";
+        form.append("textmessage", messagefield.value);
+        form.append("csrfmiddlewaretoken", token);
+
+        try {
+            await fetch("/chat/", {
+                method: "POST",
+                body: form,
+            });
+            console.log("succes");
+        } catch (err) {
+            console.error("An error occured", err);
+        }
+    }
+</script>
+
+<form onsubmit="sendMessage(); return false;" method="post">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" name="textmessage" type="text" id="sample3" />
-        <label class="mdl-textfield__label" for="sample3">Text...</label>
+        <input class="mdl-textfield__input" name="textmessage" type="text" id="messagefield" />
+        <label class="mdl-textfield__label" for="messagefield">Text...</label>
     </div>
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Senden</button>
 </form>
